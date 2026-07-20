@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="RealVDeblur: One-Step Diffusion for Generalizable Real-World Video Deblurring">
+  <meta name="keywords" content="Video Deblurring, One-step Diffusion">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- SNS 공유용 메타 태그 -->
+  <meta property="og:title" content="RealVDeblur: One-Step Diffusion for Generalizable Real-World Video Deblurring">
+  <!-- <meta property="og:description" content="We present FMA-Net++, a framework for joint video super-resolution and deblurring that explicitly models motion and dynamic exposure."> -->
+  <meta property="og:image" content="./static/images/framework.png">
+  <!-- <meta property="og:image:alt" content="FMA-Net++ Architecture"> -->
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RealVDeblur Project Page">
+  <meta name="twitter:description" content="One-Step Diffusion for Generalizable Real-World Video Deblurring">
+  <meta name="twitter:image" content="./static/images/framework.png">
+
+  <title>RealVDeblur Project Page</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./static/images/favicon-blank-v3.png?v=20260716-2112">
+  <link rel="shortcut icon" type="image/png" href="./static/images/favicon-blank-v3.png?v=20260716-2112">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <!-- Bulma CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  
+  <!-- FontAwesome & Academicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="./static/css/index.css">
+  
+  <style>
+    :root {
+        --primary-color: #000000; 
+        --gradient-start: #2563eb;
+        --gradient-end: #7c3aed;
+    }
+    .publication-title {
+        color: #18181b;
+        font-size: 2.4rem;
+        font-weight: 800;
+        line-height: 1.18;
+    }
+
+    .publication-brand {
+        display: inline-block;
+        background: linear-gradient(90deg,
+            #2563eb 0%,
+            #3b82f6 25%,
+            #6366f1 50%,
+            #3b82f6 75%,
+            #2563eb 100%);
+        background-size: 200% 100%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        animation: publication-brand-shift 8s ease-in-out infinite alternate;
+    }
+
+    .publication-title-colon,
+    .publication-title-copy {
+        color: #18181b;
+        -webkit-text-fill-color: #18181b;
+    }
+
+    .publication-mark {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1em;
+        height: 1em;
+        margin-right: 0.12em;
+        font-size: 1em;
+        vertical-align: -0.1em;
+    }
+
+    .publication-mark svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .restoration-sphere__blur {
+        transform-box: view-box;
+        transform-origin: center;
+        animation: restoration-sphere-spin 7s linear infinite;
+        will-change: transform;
+    }
+
+    @keyframes restoration-sphere-spin {
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes publication-brand-shift {
+        from { background-position: 0% 50%; }
+        to { background-position: 100% 50%; }
+    }
+
+    @media screen and (max-width: 768px) {
+        .publication-title {
+            font-size: 1.8rem;
+        }
+
+        .publication-mark {
+            font-size: 0.92em;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .publication-brand {
+            animation: none;
+            background-position: 50% 50%;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .restoration-sphere__blur {
+            animation: none;
+            transform: rotate(-28deg);
+        }
+    }
+
+    .hrbp-responsive { width: 50%; }
+    @media screen and (max-width: 768px) { .hrbp-responsive { width: 100%; } }
+	
+	.results-table th, .results-table td {
+        text-align: center !important;
+        vertical-align: middle;
+    }
+    
+    .title.is-3 {
+        color: var(--primary-color); /* 글자색을 대표색으로 */
+        border-left: none;            /* 띠 제거 */
+        padding-left: 0;
+        font-weight: 800;             /* 조금 더 굵게 강조 */
+    }
+
+    .content b, .content strong {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+
+    .project-copy {
+        max-width: 760px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.7;
+    }
+
+    .tldr-block {
+        max-width: 800px;
+        margin: 0 auto 1.5rem;
+        color: #334155;
+        font-size: 1.08rem;
+        line-height: 1.65;
+    }
+
+    .publication-hero .hero-body {
+        padding-bottom: 0.75rem;
+    }
+
+    .publication-links-wrap {
+        margin-top: 0.8rem;
+    }
+
+    .project-figure-wide {
+        display: block;
+        width: 100%;
+        max-width: 920px;
+        margin: 1rem auto 0;
+    }
+
+    .project-figure-caption {
+        max-width: 760px;
+        margin: 0.75rem auto 0;
+        color: #64748b;
+        font-size: 0.87rem;
+        line-height: 1.5;
+    }
+
+    /* --- Interactive Viewer Styles (Updated) --- */
+    .video-container-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .hero-video-carousel {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        gap: 0;
+        margin: 0 auto 0.75rem;
+    }
+
+    .hero-video-carousel #comparison-viewer {
+        flex: 1 1 800px;
+        min-width: 0;
+    }
+
+    .hero-carousel-nav {
+        position: absolute;
+        top: 50%;
+        z-index: 40;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        padding: 0;
+        border: 1px solid rgba(255,255,255,0.72);
+        border-radius: 50%;
+        background: rgba(15,15,18,0.62);
+        color: #fff;
+        cursor: pointer;
+        box-shadow: 0 5px 18px rgba(0,0,0,0.22);
+        transform: translateY(-50%);
+        backdrop-filter: blur(6px);
+        transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-carousel-nav:hover {
+        border-color: rgba(255,255,255,0.95);
+        background: rgba(37,99,235,0.88);
+        transform: translateY(-50%) scale(1.08);
+        box-shadow: 0 7px 22px rgba(37,99,235,0.3);
+    }
+
+    .hero-carousel-nav:focus-visible {
+        outline: 3px solid rgba(37,99,235,0.35);
+        outline-offset: 3px;
+    }
+
+    .hero-carousel-nav--previous {
+        left: 16px;
+    }
+
+    .hero-carousel-nav--next {
+        right: 16px;
+    }
+
+    .hero-carousel-arrow-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        pointer-events: none;
+    }
+
+    .hero-carousel-dots {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 18px;
+        margin-top: 0.15rem;
+    }
+
+    .hero-carousel-dot {
+        width: 9px;
+        height: 9px;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        background: #c4c4c9;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .hero-carousel-dot:hover {
+        background: #71717a;
+        transform: scale(1.18);
+    }
+
+    .hero-carousel-dot.is-active {
+        background: #2563eb;
+        transform: scale(1.28);
+    }
+
+    .hero-carousel-dot:focus-visible {
+        outline: 3px solid rgba(37,99,235,0.3);
+        outline-offset: 3px;
+    }
+
+    .hero-video-carousel .video-layer {
+        transition: opacity 0.16s ease;
+    }
+
+    .hero-video-carousel .video-compare-container.is-loading .video-layer {
+        opacity: 0.55;
+    }
+
+    @media screen and (max-width: 600px) {
+        .hero-carousel-nav {
+            width: 40px;
+            height: 40px;
+        }
+
+        .hero-carousel-nav--previous {
+            left: 8px;
+        }
+
+        .hero-carousel-nav--next {
+            right: 8px;
+        }
+
+        .hero-carousel-arrow-icon {
+            font-size: 0.85rem;
+        }
+    }
+
+    /* 메인 컨테이너 */
+    .video-compare-container {
+        position: relative;
+        width: auto; /* 너비 자동 */
+        
+        /* [수정] 높이를 자동(auto)으로 하고, 최대 높이만 제한 */
+        height: auto; 
+        max-height: 80vh; 
+        max-width: 100%;
+
+        border-radius: 10px; background: #000;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        overflow: hidden; 
+        user-select: none;
+        transition: max-width 0.3s ease;
+        
+        /* 기본값 */
+        aspect-ratio: 9 / 16;
+        
+        /* 커서 기본값: Grab */
+        cursor: grab; 
+        
+        /* 모바일 터치 액션 제어 (브라우저 기본 스크롤/줌 방지) */
+        touch-action: none;
+    }
+    
+    /* 드래그 중일 때 커서 */
+    .video-compare-container.is-dragging {
+        cursor: grabbing;
+    }
+
+    .video-compare-container.vertical { 
+        aspect-ratio: 9 / 16; 
+        width: 100%;
+        max-width: 320px; 
+    }
+    .video-compare-container.horizontal { 
+        aspect-ratio: 16 / 9; 
+        width: 100%;
+        max-width: 800px; 
+    }
+
+    /* [Video Layer Group] Pan/Zoom 변환이 적용되는 레이어 */
+    .video-layer {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        transform-origin: 0 0; 
+        will-change: transform; 
+        z-index: 1;
+    }
+
+    /* 캔버스 공통 */
+    canvas {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block;
+    }
+
+    /* 왼쪽 캔버스 (Input) - clip-path로 잘림 */
+    #canvas-left { z-index: 2; }
+    
+    /* 오른쪽 캔버스 (Output) - 배경 */
+    #canvas-right { z-index: 1; }
+
+    /* [UI Layer] 줌/이동의 영향을 받지 않는 고정 레이어 */
+    .ui-layer {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        pointer-events: none; /* 클릭 통과 */
+        z-index: 10;
+    }
+
+    /* 슬라이더 바 */
+    .slider-bar {
+        position: absolute; top: 0; bottom: 0; width: 2px; background: white;
+        box-shadow: 0 0 5px rgba(0,0,0,0.5); pointer-events: none;
+        left: 50%; 
+    }
+    .slider-handle {
+        position: absolute; top: 50%; left: 0; transform: translate(-50%, -50%);
+        width: 40px; height: 40px; background: white; border-radius: 50%;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; color: #333;
+    }
+
+    /* 라벨 컨테이너 */
+    .label-container {
+        position: absolute; top: 0; bottom: 0; overflow: hidden; pointer-events: none;
+    }
+    #label-clipper-left { left: 0; width: 50%; }
+    #label-clipper-right { right: 0; width: 50%; display: flex; justify-content: flex-end; }
+
+    .video-label {
+        position: absolute; top: 20px; padding: 6px 12px;
+        background-color: rgba(220, 220, 220, 0.6); color: #1a1a1a;
+        font-family: 'Google Sans', sans-serif; font-weight: 700; font-size: 0.95rem;
+        border-radius: 6px; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .label-left { left: 20px; }
+    .label-right { right: 20px; background-color: rgba(37, 99, 235, 0.7); color: white; }
+
+    /* Keep canvas source videos rendered so Safari/iOS permits muted autoplay. */
+    #main_video_source,
+    #qualitative_video_source,
+    #gs_video_source,
+    #gs_input_video_source,
+    .depth-video-source {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    .pause-overlay {
+        position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        font-size: 3rem; color: white; opacity: 0; transition: opacity 0.3s; z-index: 30; pointer-events: none;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .video-compare-container.paused .pause-overlay { opacity: 1; }
+    
+    .zoom-instruction {
+        position: absolute; bottom: 15px; width: 100%; text-align: center;
+        color: white; 
+        font-size: 0.8rem; 
+        font-weight: 700; /* 굵게 */
+        pointer-events: none; 
+        z-index: 20; 
+        /* 검은색 테두리 (4방향 그림자) */
+        text-shadow: 
+            -1px -1px 0 #000,  
+             1px -1px 0 #000,
+            -1px  1px 0 #000,
+             1px  1px 0 #000,
+             0 2px 5px rgba(0,0,0,0.5);
+    }
+    
+    .scale-indicator {
+        position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+        padding: 4px 10px; background-color: rgba(0, 0, 0, 0.5); color: white;
+        font-family: 'Google Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+        border-radius: 4px; pointer-events: none; backdrop-filter: blur(2px); z-index: 20;
+        opacity: 0; transition: opacity 0.3s;
+    }
+    
+    .tabs-wrapper { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .qualitative-comparison {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .method-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .method-tab {
+        border: 1px solid #d4d4d8;
+        border-radius: 999px;
+        background: #fff;
+        color: #27272a;
+        cursor: pointer;
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        padding: 8px 18px;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .method-tab.is-active {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #fff;
+    }
+
+    .qualitative-video-compare {
+        cursor: grab;
+        touch-action: none;
+    }
+
+    #qualitative-canvas-left {
+        z-index: 2;
+    }
+
+    #qualitative-canvas-right {
+        z-index: 1;
+    }
+
+    #qualitative-label-clipper-left {
+        left: 0;
+        width: 50%;
+    }
+
+    #qualitative-label-clipper-right {
+        right: 0;
+        width: 50%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+
+    #gs-canvas-left {
+        z-index: 2;
+    }
+
+    #gs-canvas-right {
+        z-index: 1;
+    }
+
+    #gs-label-clipper-left {
+        left: 0;
+        width: 50%;
+    }
+
+    #gs-label-clipper-right {
+        right: 0;
+        width: 50%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .gs-comparison-intro {
+        max-width: 780px;
+        margin: 0.5rem auto 1.35rem;
+        color: #52525b;
+        font-size: 0.98rem;
+        line-height: 1.65;
+    }
+
+    .gs-control-panel {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+        width: min(100%, 800px);
+        margin: 0 auto 1.75rem;
+        padding: 14px 18px;
+        border: 1px solid #e4e4e7;
+        border-radius: 14px;
+        background: #fafafa;
+    }
+
+    .gs-control-group {
+        display: grid;
+        grid-template-columns: 64px minmax(0, 1fr);
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+    }
+
+    .gs-control-label {
+        color: #71717a;
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .gs-control-panel .method-tabs,
+    .gs-control-panel .qualitative-thumbnails {
+        justify-content: flex-start;
+        margin: 0;
+    }
+
+    .gs-control-panel .qualitative-thumbnails {
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .gs-control-panel .qualitative-thumb {
+        width: 108px;
+    }
+
+    .gs-comparison-row {
+        width: 100%;
+        margin-bottom: 2.25rem;
+    }
+
+    .gs-comparison-row + .gs-comparison-row {
+        padding-top: 1.75rem;
+        border-top: 1px solid #e4e4e7;
+    }
+
+    .gs-row-heading {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        width: min(100%, 800px);
+        margin: 0 auto 0.75rem;
+        text-align: left;
+    }
+
+    .gs-row-index {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 27px;
+        height: 27px;
+        flex: 0 0 27px;
+        border-radius: 50%;
+        background: #2563eb;
+        color: #fff;
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 800;
+    }
+
+    .gs-row-copy {
+        min-width: 0;
+    }
+
+    .gs-row-title {
+        margin: 1px 0 2px;
+        color: #27272a;
+        font-family: 'Google Sans', sans-serif;
+        font-size: 1.05rem;
+        font-weight: 800;
+        line-height: 1.35;
+    }
+
+    .gs-row-note {
+        margin: 0;
+        color: #71717a;
+        font-size: 0.86rem;
+        line-height: 1.45;
+    }
+
+    .gs-comparison-row .video-container-wrapper {
+        margin-bottom: 0;
+    }
+
+    #gs-input-canvas-left {
+        z-index: 2;
+    }
+
+    #gs-input-canvas-right {
+        z-index: 1;
+    }
+
+    #gs-input-label-clipper-left {
+        left: 0;
+        width: 50%;
+    }
+
+    #gs-input-label-clipper-right {
+        right: 0;
+        width: 50%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    @media screen and (max-width: 640px) {
+        .gs-control-panel {
+            align-items: stretch;
+            gap: 14px;
+            padding: 14px;
+        }
+
+        .gs-control-group {
+            grid-template-columns: 1fr;
+            justify-items: center;
+            gap: 7px;
+        }
+
+        .gs-control-panel .method-tabs {
+            justify-content: center;
+            gap: 7px;
+        }
+        .gs-control-panel .method-tab {
+            padding: 7px 12px;
+            font-size: 0.84rem;
+        }
+
+        .gs-control-panel .qualitative-thumbnails {
+            justify-content: center;
+        }
+
+        .gs-row-heading {
+            align-items: flex-start;
+        }
+
+        .gs-row-note {
+            font-size: 0.8rem;
+        }
+
+        .gs-comparison-row .video-label {
+            top: 12px;
+            padding: 5px 8px;
+            font-size: 0.76rem;
+        }
+
+        .gs-comparison-row .label-left {
+            left: 10px;
+        }
+
+        .gs-comparison-row .label-right {
+            right: 10px;
+        }
+    }
+
+    .depth-comparison-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+        gap: 18px;
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    .video-compare-container.depth-video-compare {
+        aspect-ratio: 3 / 4;
+        width: 100%;
+        max-width: min(600px, 60vh);
+        justify-self: center;
+    }
+
+    .depth-canvas-left {
+        z-index: 2;
+    }
+
+    .depth-canvas-right {
+        z-index: 1;
+    }
+
+    .depth-label-clipper-left {
+        left: 0;
+        width: 50%;
+    }
+
+    .depth-label-clipper-right {
+        right: 0;
+        width: 50%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    @media screen and (max-width: 768px) {
+        .depth-comparison-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .qualitative-instruction {
+        bottom: 12px;
+    }
+
+    .qualitative-thumbnails {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: -0.5rem;
+    }
+
+    .qualitative-thumb {
+        width: 132px;
+        padding: 0;
+        border: 2px solid transparent;
+        border-radius: 8px;
+        background: transparent;
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .qualitative-thumb.is-active {
+        border-color: #2563eb;
+    }
+
+    .qualitative-thumb video,
+    .qualitative-thumb img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        background: #000;
+    }
+
+    .qualitative-thumb span {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 4px 6px;
+        background: rgba(0,0,0,0.62);
+        color: #fff;
+        font-family: 'Google Sans', sans-serif;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+    /* Final section rhythm overrides. */
+    section.section {
+        padding: 2rem 1.5rem;
+    }
+
+    .publication-hero + section.section {
+        padding-top: 1.5rem;
+    }
+
+    section.section.section-results,
+    section.section.section-3dgs {
+        padding-top: 3rem;
+    }
+
+    section.section#BibTeX {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+
+    @media screen and (max-width: 768px) {
+        section.section {
+            padding: 2.75rem 1.25rem;
+        }
+
+        .publication-hero + section.section {
+            padding-top: 1rem;
+        }
+
+        section.section.section-results,
+        section.section.section-3dgs {
+            padding-top: 4rem;
+        }
+
+        section.section#BibTeX {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero publication-hero">
+    <div class="hero-body">
+      <div class="container is-max-widescreen">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            
+            <h1 class="title publication-title">
+              <!-- <span class="publication-mark" aria-hidden="true">
+                <svg class="restoration-sphere" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <radialGradient id="restoration-sphere-surface" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(20.5 10) rotate(128) scale(20)">
+                      <stop stop-color="#dbeafe"/>
+                      <stop offset="0.28" stop-color="#60a5fa"/>
+                      <stop offset="0.7" stop-color="#2563eb"/>
+                      <stop offset="1" stop-color="#1e3a8a"/>
+                    </radialGradient>
+                    <linearGradient id="restoration-sphere-edge" x1="5" y1="7" x2="27" y2="25" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#3b82f6"/>
+                      <stop offset="1" stop-color="#6366f1"/>
+                    </linearGradient>
+                    <clipPath id="restoration-sphere-clip">
+                      <circle cx="16" cy="16" r="12"/>
+                    </clipPath>
+                    <filter id="restoration-sphere-soften" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="1.15"/>
+                    </filter>
+                  </defs>
+                  <circle cx="16" cy="16" r="12" fill="url(#restoration-sphere-surface)"/>
+                  <g clip-path="url(#restoration-sphere-clip)">
+                    <g class="restoration-sphere__blur" filter="url(#restoration-sphere-soften)">
+                      <path d="M2 2H16V30H2Z" fill="#c7d2fe" opacity="0.48"/>
+                      <path d="M10 3.5C5.5 9 5.5 23 10 28.5" stroke="#818cf8" stroke-width="3" stroke-linecap="round" opacity="0.42"/>
+                    </g>
+                    <ellipse cx="21.5" cy="9.5" rx="2.4" ry="4.2" transform="rotate(42 21.5 9.5)" fill="white" opacity="0.42"/>
+                  </g>
+                  <circle cx="16" cy="16" r="12" stroke="url(#restoration-sphere-edge)" stroke-width="1.7"/>
+                </svg>
+              </span> -->
+              <span class="publication-brand">RealVDeblur</span><span class="publication-title-colon">:</span><span class="publication-title-copy"> One-Step Diffusion for<br>Generalizable Real-World Video Deblurring</span>
+            </h1>
+            
+            <div class="is-size-5 publication-authors">
+              <!-- <span class="author-block"><a href="https://geunhyukyouk.github.io/">Geunhyuk Youk</a><sup>1</sup>,</span>
+              <span class="author-block"><a href="https://sites.google.com/view/ozbro/">Jihyong Oh</a><sup>2†</sup>,</span>
+              <span class="author-block"><a href="https://www.viclab.kaist.ac.kr/">Munchurl Kim</a><sup>1†</sup></span> -->
+              <span class="author-block"></span>Renbiao Jin</a><sup>1,2*</sup>,</span>
+              <span class="author-block"></span>MingXin Yang</a><sup>1,2*</sup>,</span>
+              <span class="author-block"></span>Yutian Chen</a><sup>2,3</sup>,</span>
+              <span class="author-block"></span>Junhao Zhuang</a><sup>5</sup>,</span>
+              <span class="author-block"></span>Xin Cai</a><sup>2,3</sup>,</span>
+              <span class="author-block"></span>Mulin Yu</a><sup>2</sup>,</span>
+              <span class="author-block"></span>Linning Xu</a><sup>3</sup>,</span>
+              <span class="author-block"></span>Wenxian Yu</a><sup>1</sup>,</span><br>
+              <span class="author-block"></span>Danping Zou</a><sup>1†</sup>,</span> 
+              <span class="author-block"></span>Shi Guo</a><sup>2†</sup>,</span>
+              <span class="author-block"></span>Tianfan Xue</a><sup>3,2,4</sup></span>
+            </div>
+            
+            <div class="is-size-6 publication-authors">
+              <span class="author-block"><sup>1</sup>Shanghai Jiao Tong University,</span> <!-- <br> -->
+              <span class="author-block"><sup>2</sup>Shanghai AI Laboratory,</span>
+              <span class="author-block"><sup>3</sup>CUHK MMLab,</span>
+              <span class="author-block"><sup>4</sup>CPII under InnoHK, </span>
+              <span class="author-block"><sup>5</sup>Tsinghua University</span>
+            </div>
+            <div class="is-size-7 publication-authors">
+              <span class="author-block"><sup>*</sup>Equal contribution</span>
+              <span class="author-block"><sup>†</sup>Corresponding author</span>
+            </div>
+			<!-- <div class="is-size-4 publication-authors"> -->
+              <!-- <span class="author-block" style="color:#1a3d7c">ECCV 2026</span> -->
+            <!-- </div> -->
+            
+            <div class="publication-links-wrap has-text-centered">
+              <div class="publication-links">
+                <!-- <span class="link-block"><a href="https://arxiv.org/abs/x" class="external-link button is-normal is-rounded is-dark"><span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span></a></span> -->
+                <span class="link-block"><a href="https://arxiv.org/abs/x" class="external-link button is-normal is-rounded is-dark"><span class="icon"><i class="ai ai-arxiv"></i></span><span>arXiv</span></a></span>
+                <!--<span class="link-block"><a href="#" class="external-link button is-normal is-rounded is-dark"><span class="icon"><i class="fab fa-youtube"></i></span><span>Demo</span></a></span>-->
+                <span class="link-block"><a href="https://github.com/xx" class="external-link button is-normal is-rounded is-dark"><span class="icon"><i class="fab fa-github"></i></span><span>Code</span></a></span>
+                <span class="link-block"><a href="https://huggingface.co/xx" class="external-link button is-normal is-rounded is-dark"><span style="font-size: 1.1em;">&#x1F917;</i></span><span>Model</span></a></span>
+                <span class="link-block"><a href="https://huggingface.co/xx" class="external-link button is-normal is-rounded is-dark"><span style="font-size: 1.1em;">&#x1F917;</i></span><span>Dataset(Pending Realease)</span></a></span>
+              
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Demo Section -->
+  <section class="section">
+    <div class="container is-max-widescreen">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <!-- <h2 class="title is-3">Interactive Real-World Demo</h2>
+          <div class="content has-text-centered mb-5">
+            <p class="is-size-6 text-gray-500">
+                Drag the slider handle to compare <b>Blurry LR Input</b> vs <b>FMA-Net++</b><br>
+                <span class="is-size-7">(Tap anywhere to <b>Play/Pause</b>, Scroll/Pinch to <b>Zoom</b>, Drag to <b>Pan</b>)</span>
+            </p>
+          </div> -->
+          <div class="tldr-block">
+            <p><strong>TL;DR.</strong> RealVDeblur is a one-step video diffusion model for robust real-world video deblurring. Trained on OmniBlur and equipped with frame-wise encoding and a Temporal Window Mask, it restores sharp, temporally consistent videos and improves downstream 3D perception.</p>
+          </div>
+          <div class="video-container-wrapper hero-video-carousel" role="region" aria-label="RealVDeblur video examples">
+              <button class="hero-carousel-nav hero-carousel-nav--previous" id="hero-previous-scene" type="button" aria-label="Previous video">
+                  <span class="hero-carousel-arrow-icon" aria-hidden="true"><i class="fas fa-chevron-left"></i></span>
+              </button>
+
+              <div class="video-compare-container horizontal" id="comparison-viewer">
+                
+                <video id="main_video_source" autoplay loop muted playsinline preload="auto">
+                    <source src="./static/videos/2023_07_10_02_48_26_blur_ours.mp4" type="video/mp4">
+                </video>
+
+                <div class="video-layer" id="video-layer-group">
+                    <canvas id="canvas-right"></canvas> <canvas id="canvas-left"></canvas>  </div>
+
+                <div class="ui-layer">
+                    <div id="label-clipper-left" class="label-container">
+                        <div class="video-label label-left">Blurry LR Input</div>
+                    </div>
+                    <div id="label-clipper-right" class="label-container">
+                        <div class="video-label label-right">RealVDeblur</div>
+                    </div>
+                    <div class="slider-bar" id="slider-bar">
+                        <div class="slider-handle"><i class="fas fa-arrows-alt-h"></i></div>
+                    </div>
+                    <div id="scale-indicator" class="scale-indicator">1.0x</div>
+                </div>
+
+                <div class="pause-overlay"><i class="fas fa-pause"></i></div>
+                <div class="zoom-instruction">Tap anywhere to Play/Pause &bull; Scroll/Pinch to Zoom &bull; Drag to Pan</div>
+              </div>
+
+              <button class="hero-carousel-nav hero-carousel-nav--next" id="hero-next-scene" type="button" aria-label="Next video">
+                  <span class="hero-carousel-arrow-icon" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+              </button>
+          </div>
+          <div class="hero-carousel-dots" id="hero-scene-dots" aria-label="Choose a video"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abstract Section -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Real-world video deblurring remains challenging due to diverse motion patterns, complex degradations, and the scarcity of realistic training data, yet robust restoration is critical for downstream pipelines such as mobile imaging and 3D reconstruction. 
+              This work presents <b>RealVDeblur</b>, an efficient generative framework designed to improve in-the-wild robustness under diverse real capture conditions. 
+              First, a large-scale, physically grounded blur synthesis pipeline is constructed from scene-level 3D Gaussian Splatting (3DGS) assets and high-frame-rate videos, providing realistic training data covering both camera-induced and object-motion blur. 
+              Second, a video diffusion prior is leveraged for restoration; to better accommodate frame-dependent blur variations, temporal compression in the VAE is disabled and a frame-wise encoding scheme is adopted. 
+              For practical deployment on long videos, multi-step diffusion sampling is distilled into an efficient one-step generator, and a training-free Temporal Window Mask stabilizes inference beyond the training horizon with constant memory usage. 
+              Extensive experiments on diverse real-world benchmarks demonstrate strong perceptual quality, semantic fidelity, and temporal consistency on unseen videos, as well as improved robustness in downstream 3D reconstruction under severe motion blur.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Framework Section -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Method</h2>
+          <div class="content project-copy">
+            <p>
+              RealVDeblur adapts a pre-trained video diffusion model for real-world video deblurring. It combines frame-wise latent encoding for varying blur, one-step distillation for efficient inference, and a training-free Temporal Window Mask for stable long-video restoration.
+            </p>
+          </div>
+          <img src="./static/images/framework.png" class="interpolation-image project-figure-wide" alt="Overview of the RealVDeblur framework"/>
+          <!-- <p class="project-figure-caption">RealVDeblur combines frame-wise conditioning, one-step distillation, and local temporal attention for practical real-world video deblurring.</p> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Dataset</h2>
+          <div class="content project-copy">
+            <p>
+              OmniBlur combines approximately 2,000 3DGS scenes and 3,000 high-frame-rate videos to cover camera-motion, object-motion, defocus, and compound blur. It contains about 56,000 training clips with 1.1 million frames.
+            </p>
+          </div>
+          <img src="./static/images/omniblur.jpg" class="interpolation-image project-figure-wide" alt="Examples from the OmniBlur dataset"/>
+          <p class="project-figure-caption">Examples of camera-motion and depth-dependent defocus blur synthesized from diverse 3DGS scenes.</p>
+        </div>
+      </div>
+    </div>
+
+
+  </section>
+
+  <!-- Qualitative Results Section -->
+  <section class="section section-results">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Real-world Video Deblurring Results</h2>
+          <p class="project-copy">
+            RealVDeblur delivers sharper details and stronger temporal consistency across diverse real-world blur.
+          </p>
+<!-- Compared to previous models, our models provides a detail-rich result with comparable temporal consistency. -->
+          <!-- <img src="./static/images/qualitative.png" class="interpolation-image" alt="Qualitative Results" style="width: 100%; margin-top: 0px;"/> -->
+          <!-- <p class="is-size-6 has-text-black"><b>Figure 4.</b> Visual comparisons on challenging real-world videos (NIQE&darr; / MUSIQ&uarr;).</p> -->
+          <div class="qualitative-comparison">
+            <div class="method-tabs" id="qualitative-method-tabs" aria-label="Comparison methods">
+              <button class="method-tab is-active" type="button" data-method="input">Input</button>
+              <button class="method-tab" type="button" data-method="vrt">VRT</button>
+              <button class="method-tab" type="button" data-method="rvrt">RVRT</button>
+              <button class="method-tab" type="button" data-method="bsstnet">BSSTNet</button>
+              <button class="method-tab" type="button" data-method="dstnet">DSTNet++</button>
+            </div>
+
+            <div class="video-container-wrapper">
+              <div class="video-compare-container qualitative-video-compare horizontal" id="qualitative-comparison-viewer">
+                <video id="qualitative_video_source" autoplay loop muted playsinline>
+                  <source src="./static/videos/compare1_blur_ours.mp4" type="video/mp4">
+                </video>
+
+                <div class="video-layer" id="qualitative-video-layer-group">
+                  <canvas id="qualitative-canvas-right"></canvas>
+                  <canvas id="qualitative-canvas-left"></canvas>
+                </div>
+
+                <div class="ui-layer">
+                  <div id="qualitative-label-clipper-left" class="label-container">
+                    <div class="video-label label-left" id="qualitative-label-left">Blur Input</div>
+                  </div>
+                  <div id="qualitative-label-clipper-right" class="label-container">
+                    <div class="video-label label-right">RealVDeblur</div>
+                  </div>
+                  <div class="slider-bar" id="qualitative-slider-bar">
+                    <div class="slider-handle"><i class="fas fa-arrows-alt-h"></i></div>
+                  </div>
+                  <div id="qualitative-scale-indicator" class="scale-indicator">1.0x</div>
+                </div>
+
+                <div class="pause-overlay"><i class="fas fa-pause"></i></div>
+                <div class="zoom-instruction qualitative-instruction">Tap anywhere to Play/Pause &bull; Scroll/Pinch to Zoom &bull; Drag to Pan</div>
+              </div>
+            </div>
+
+            <div class="qualitative-thumbnails" id="qualitative-scene-thumbnails" aria-label="Comparison videos"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 3DGS -->
+  <section class="section section-3dgs">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Downstream Application: 3D Gaussian Splatting</h2>
+          <p class="gs-comparison-intro">
+            RealVDeblur restores sharp training views before standard 3DGS reconstruction, reducing floaters and improving texture and geometry. Choose a baseline for the NVS comparison and a scene below: the first row shows the blurred and restored training observations, and the second compares the corresponding novel-view synthesis results.
+          </p>
+          <div class="qualitative-comparison">
+            <div class="gs-control-panel" aria-label="3DGS comparison controls">
+              <div class="gs-control-group">
+                <span class="gs-control-label">Method</span>
+                <div class="method-tabs" id="gs-method-tabs" aria-label="3DGS comparison methods">
+                  <button class="method-tab is-active" type="button" data-method="blur">3DGS</button>
+                  <button class="method-tab" type="button" data-method="bags">BAGS</button>
+                  <button class="method-tab" type="button" data-method="deblurringgs">Deblurring-3DGS</button>
+                </div>
+              </div>
+              <div class="gs-control-group">
+                <span class="gs-control-label">Scene</span>
+                <div class="qualitative-thumbnails" id="gs-scene-thumbnails" aria-label="3DGS comparison scenes"></div>
+              </div>
+            </div>
+
+            <div class="gs-comparison-row">
+              <div class="gs-row-heading">
+                <span class="gs-row-index">1</span>
+                <div class="gs-row-copy">
+                  <h3 class="gs-row-title">Training inputs</h3>
+                  <p class="gs-row-note" id="gs-input-note">Left: blurred observations used by the selected baseline. Right: observations restored by RealVDeblur before standard 3DGS training.</p>
+                </div>
+              </div>
+
+              <div class="video-container-wrapper">
+                <div class="video-compare-container qualitative-video-compare horizontal" id="gs-input-comparison-viewer">
+                  <video id="gs_input_video_source" autoplay loop muted playsinline preload="metadata">
+                    <source src="./static/videos/3dgs01_blur_input_realvdeblur_input.mp4" type="video/mp4">
+                  </video>
+
+                  <div class="video-layer">
+                    <canvas id="gs-input-canvas-right"></canvas>
+                    <canvas id="gs-input-canvas-left"></canvas>
+                  </div>
+
+                  <div class="ui-layer">
+                    <div id="gs-input-label-clipper-left" class="label-container">
+                      <div class="video-label label-left" id="gs-input-label-left">Blurred inputs</div>
+                    </div>
+                    <div id="gs-input-label-clipper-right" class="label-container">
+                      <div class="video-label label-right" id="gs-input-label-right">Restored inputs</div>
+                    </div>
+                    <div class="slider-bar" id="gs-input-slider-bar">
+                      <div class="slider-handle"><i class="fas fa-arrows-alt-h"></i></div>
+                    </div>
+                  </div>
+
+                  <div class="pause-overlay"><i class="fas fa-pause"></i></div>
+                  <div class="zoom-instruction qualitative-instruction">Tap anywhere to Play/Pause &bull; Drag slider to compare inputs</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="gs-comparison-row">
+              <div class="gs-row-heading">
+                <span class="gs-row-index">2</span>
+                <div class="gs-row-copy">
+                  <h3 class="gs-row-title">Novel-view synthesis results</h3>
+                  <p class="gs-row-note" id="gs-nvs-note" aria-live="polite">Left: novel views rendered by 3DGS from blurred observations. Right: novel views rendered by 3DGS from RealVDeblur-restored observations.</p>
+                </div>
+              </div>
+
+              <div class="video-container-wrapper">
+                <div class="video-compare-container qualitative-video-compare horizontal" id="gs-comparison-viewer">
+                  <video id="gs_video_source" autoplay loop muted playsinline preload="metadata">
+                    <source src="./static/videos/3dgs01_blur_realvdeblur.mp4" type="video/mp4">
+                  </video>
+
+                  <div class="video-layer" id="gs-video-layer-group">
+                    <canvas id="gs-canvas-right"></canvas>
+                    <canvas id="gs-canvas-left"></canvas>
+                  </div>
+
+                  <div class="ui-layer">
+                    <div id="gs-label-clipper-left" class="label-container">
+                      <div class="video-label label-left" id="gs-label-left">3DGS</div>
+                    </div>
+                    <div id="gs-label-clipper-right" class="label-container">
+                      <div class="video-label label-right" id="gs-label-right">RealVDeblur + 3DGS</div>
+                    </div>
+                    <div class="slider-bar" id="gs-slider-bar">
+                      <div class="slider-handle"><i class="fas fa-arrows-alt-h"></i></div>
+                    </div>
+                  </div>
+
+                  <div class="pause-overlay"><i class="fas fa-pause"></i></div>
+                  <div class="zoom-instruction qualitative-instruction">Tap anywhere to Play/Pause &bull; Drag slider to compare NVS results</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Depth -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Downstream Application: Video Depth Estimation</h2>
+          <p class="project-copy">
+            Deblurring before DepthAnythingV3 produces sharper depth boundaries and more consistent scene geometry.
+          </p>
+          <div class="qualitative-comparison">
+            <div class="depth-comparison-grid">
+              <div class="video-compare-container qualitative-video-compare depth-video-compare" data-depth-comparison aria-label="Depth comparison example 1">
+                <video class="depth-video-source" autoplay loop muted playsinline>
+                  <source src="./static/videos/dav3_01_blur_realvdeblur.mp4" type="video/mp4">
+                </video>
+
+                <div class="video-layer">
+                  <canvas class="depth-canvas-right"></canvas>
+                  <canvas class="depth-canvas-left"></canvas>
+                </div>
+
+                <div class="ui-layer">
+                  <div class="label-container depth-label-clipper-left">
+                    <div class="video-label label-left">Blur</div>
+                  </div>
+                  <div class="label-container depth-label-clipper-right">
+                    <div class="video-label label-right">RealVDeblur</div>
+                  </div>
+                  <div class="slider-bar depth-slider-bar">
+                    <div class="slider-handle"><i class="fas fa-arrows-alt-h"></i></div>
+                  </div>
+                </div>
+
+                <div class="pause-overlay"><i class="fas fa-pause"></i></div>
+                <div class="zoom-instruction qualitative-instruction">Tap to Play/Pause</div>
+              </div>
+
+              <div class="video-compare-container qualitative-video-compare depth-video-compare" data-depth-comparison aria-label="Depth comparison example 2 placeholder">
+                <video class="depth-video-source" autoplay loop muted playsinline>
+                  <source src="./static/videos/dav3_02_blur_realvdeblur.mp4" type="video/mp4">
+                </video>
+
+                <div class="video-layer">
+                  <canvas class="depth-canvas-right"></canvas>
+                  <canvas class="depth-canvas-left"></canvas>
+                </div>
+
+                <div class="ui-layer">
+                  <div class="label-container depth-label-clipper-left">
+                    <div class="video-label label-left">Blur</div>
+                  </div>
+                  <div class="label-container depth-label-clipper-right">
+                    <div class="video-label label-right">RealVDeblur</div>
+                  </div>
+                  <div class="slider-bar depth-slider-bar">
+                    <div class="slider-handle"><i class="fas fa-arrows-alt-h"></i></div>
+                  </div>
+                </div>
+
+                <div class="pause-overlay"><i class="fas fa-pause"></i></div>
+                <div class="zoom-instruction qualitative-instruction">Tap to Play/Pause</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BibTeX Section -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>@article{jinre2025realvdeblur,
+  author    = {Jin, Renbiao and Yang, Mingxin and Chen, Yutian and Zhuang, Junhao and Cai, Xin and Yu, Mulin and Xu, Linning and Yu, Wenxian and Zou, Danping and Guo, Shi and Xue, Tianfan},
+  title     = {RealVDeblur: One-Step Diffusion for Generalizable Real-World Video Deblurring},
+  booktitle = {arXiv preprint arXiv:2607.xxxx},
+  year      = {2026},
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content">
+              <p>
+                This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 License</a>.
+                <br>
+                Website template adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+                <br>
+                <!-- Please visit our <a href="https://github.com/KAIST-VICLab">VIC-Lab</a> for more interesting researches. -->
+              </p>
+            </div>
+          </div>
+          <!-- <a href="https://mapmyvisitors.com/web/1c11g" title="Visit tracker">
+            <img src="https://mapmyvisitors.com/map.png?d=pF_SNa_FFctC9GcbyLfztMuhdqMz3pXp4e1M3bd-dps&cl=ffffff">
+          </a> -->
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    const qualitativeScenes = [
+        {
+            name: "Video 1",
+            thumbnail: "./static/images/thumbnails/023_0002_realvdeblur.jpg",
+            methods: {
+                input: "./static/videos/023_0002_blur_ours.mp4",
+                vrt: "./static/videos/023_0002_vrt_ours.mp4",
+                rvrt: "./static/videos/023_0002_rvrt_ours.mp4",
+                bsstnet: "./static/videos/023_0002_bsstnet_ours.mp4",
+                dstnet: "./static/videos/023_0002_dstnet_ours.mp4"
+            }
+        },
+        {
+            name: "Video 2",
+            thumbnail: "./static/images/thumbnails/031_0003_realvdeblur.jpg",
+            methods: {
+                input: "./static/videos/031_0003_blur_ours.mp4",
+                vrt: "./static/videos/031_0003_vrt_ours.mp4",
+                rvrt: "./static/videos/031_0003_rvrt_ours.mp4",
+                bsstnet: "./static/videos/031_0003_bsstnet_ours.mp4",
+                dstnet: "./static/videos/031_0003_dstnet_ours.mp4"
+            }
+        },
+        {
+            name: "Video 3",
+            thumbnail: "./static/images/thumbnails/032_0003_realvdeblur.jpg",
+            methods: {
+                input: "./static/videos/032_0003_blur_ours.mp4",
+                vrt: "./static/videos/032_0003_vrt_ours.mp4",
+                rvrt: "./static/videos/032_0003_rvrt_ours.mp4",
+                bsstnet: "./static/videos/032_0003_bsstnet_ours.mp4",
+                dstnet: "./static/videos/032_0003_dstnet_ours.mp4"
+            }
+        },
+        {
+            name: "Video 4",
+            thumbnail: "./static/images/thumbnails/000_0001_realvdeblur.jpg",
+            methods: {
+                input: "./static/videos/000_0001_blur_ours.mp4",
+                vrt: "./static/videos/000_0001_vrt_ours.mp4",
+                rvrt: "./static/videos/000_0001_rvrt_ours.mp4",
+                bsstnet: "./static/videos/000_0001_bsstnet_ours.mp4",
+                dstnet: "./static/videos/000_0001_dstnet_ours.mp4"
+            }
+        },
+    ];
+
+    const qualitativeMethodLabels = {
+        input: "Blur Input",
+        rvrt: "RVRT",
+        bsstnet: "BSSTNet"
+    };
+
+    function initQualitativeComparison() {
+        const qContainer = document.getElementById('qualitative-comparison-viewer');
+        if (!qContainer) return;
+
+        const qVideo = document.getElementById('qualitative_video_source');
+        const qCanvasLeft = document.getElementById('qualitative-canvas-left');
+        const qCanvasRight = document.getElementById('qualitative-canvas-right');
+        const qVideoLayer = document.getElementById('qualitative-video-layer-group');
+        const qCtxLeft = qCanvasLeft.getContext('2d');
+        const qCtxRight = qCanvasRight.getContext('2d');
+        const qLabelLeft = document.getElementById('qualitative-label-left');
+        const qClipperLeft = document.getElementById('qualitative-label-clipper-left');
+        const qClipperRight = document.getElementById('qualitative-label-clipper-right');
+        const qSliderBar = document.getElementById('qualitative-slider-bar');
+        const qScaleIndicator = document.getElementById('qualitative-scale-indicator');
+        const qThumbs = document.getElementById('qualitative-scene-thumbnails');
+        const qMethodTabs = document.querySelectorAll('#qualitative-method-tabs .method-tab');
+
+        let qSliderPos = 0.5;
+        let qSceneIndex = 0;
+        let qMethod = 'input';
+        let qDragging = false;
+        let qClickStartX = 0;
+        let qClickStartY = 0;
+        let qState = { scale: 1, pX: 0, pY: 0 };
+        const Q_MIN_SCALE = 1;
+        const Q_MAX_SCALE = 8;
+        let qInitialPinchDistance = null;
+        let qInitialScale = 1;
+        let qLastTouchX = 0;
+        let qLastTouchY = 0;
+        let qSliderDragging = false;
+        let qTouchStartTime = 0;
+        let qTouchStartX = 0;
+        let qTouchStartY = 0;
+        let qTouchDevice = false;
+
+        function updateQualitativeSlider() {
+            qVideoLayer.style.transform = `translate(${qState.pX}px, ${qState.pY}px) scale(${qState.scale})`;
+            const sliderScreenX = qContainer.offsetWidth * qSliderPos;
+            const clipX = (sliderScreenX - qState.pX) / qState.scale;
+            qCanvasLeft.style.clipPath = `polygon(0 0, ${clipX}px 0, ${clipX}px 100%, 0 100%)`;
+            qClipperLeft.style.width = (qSliderPos * 100) + '%';
+            qClipperRight.style.width = ((1 - qSliderPos) * 100) + '%';
+            qSliderBar.style.left = (qSliderPos * 100) + '%';
+            qScaleIndicator.textContent = qState.scale.toFixed(1) + 'x';
+            qScaleIndicator.style.opacity = qState.scale > 1.01 ? 1 : 0;
+        }
+
+        function clampQualitativePan() {
+            const width = qContainer.offsetWidth;
+            const height = qContainer.offsetHeight;
+            const scaledWidth = width * qState.scale;
+            const scaledHeight = height * qState.scale;
+            qState.pX = scaledWidth > width ? Math.min(0, Math.max(width - scaledWidth, qState.pX)) : 0;
+            qState.pY = scaledHeight > height ? Math.min(0, Math.max(height - scaledHeight, qState.pY)) : 0;
+        }
+
+        function resetQualitativeTransform() {
+            qState = { scale: 1, pX: 0, pY: 0 };
+            updateQualitativeSlider();
+        }
+
+        function setQualitativeVideo() {
+            qVideo.src = qualitativeScenes[qSceneIndex].methods[qMethod];
+            qLabelLeft.textContent = qualitativeMethodLabels[qMethod];
+            qVideo.play().catch(() => qContainer.classList.add('paused'));
+            qContainer.classList.remove('paused');
+            resetQualitativeTransform();
+        }
+
+        function drawQualitativeLoop() {
+            if (qVideo.readyState >= 2) {
+                const isMerged = qVideo.videoWidth > qVideo.videoHeight;
+                const srcWidth = isMerged ? qVideo.videoWidth / 2 : qVideo.videoWidth;
+                const srcHeight = qVideo.videoHeight;
+
+                if (qCanvasLeft.width !== srcWidth || qCanvasLeft.height !== srcHeight) {
+                    qCanvasLeft.width = srcWidth;
+                    qCanvasLeft.height = srcHeight;
+                    qCanvasRight.width = srcWidth;
+                    qCanvasRight.height = srcHeight;
+
+                    const displayRatio = srcWidth / srcHeight;
+                    qContainer.classList.remove('vertical', 'horizontal');
+                    if (displayRatio < 0.8) qContainer.classList.add('vertical');
+                    else qContainer.classList.add('horizontal');
+                    updateQualitativeSlider();
+                }
+
+                if (isMerged) {
+                    qCtxLeft.drawImage(qVideo, 0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+                    qCtxRight.drawImage(qVideo, srcWidth, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+                } else {
+                    qCtxLeft.drawImage(qVideo, 0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+                    qCtxRight.drawImage(qVideo, 0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+                }
+            }
+            requestAnimationFrame(drawQualitativeLoop);
+        }
+
+        function setQualitativeSliderFromEvent(e) {
+            const rect = qContainer.getBoundingClientRect();
+            qSliderPos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            updateQualitativeSlider();
+        }
+
+        function getQualitativeDistance(touchA, touchB) {
+            return Math.hypot(touchA.clientX - touchB.clientX, touchA.clientY - touchB.clientY);
+        }
+
+        function toggleQualitativePlay() {
+            if (qVideo.paused) {
+                qVideo.play();
+                qContainer.classList.remove('paused');
+            } else {
+                qVideo.pause();
+                qContainer.classList.add('paused');
+            }
+        }
+
+        qualitativeScenes.forEach((scene, index) => {
+            const button = document.createElement('button');
+            button.className = 'qualitative-thumb' + (index === 0 ? ' is-active' : '');
+            button.type = 'button';
+            button.innerHTML = '<img src="' + scene.thumbnail + '" alt="" loading="lazy"><span>' + scene.name + '</span>';
+            button.addEventListener('click', () => {
+                qSceneIndex = index;
+                document.querySelectorAll('.qualitative-thumb').forEach((el, i) => {
+                    el.classList.toggle('is-active', i === index);
+                });
+                setQualitativeVideo();
+            });
+            qThumbs.appendChild(button);
+        });
+
+        qMethodTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                qMethod = tab.dataset.method;
+                qMethodTabs.forEach((el) => el.classList.toggle('is-active', el === tab));
+                setQualitativeVideo();
+            });
+        });
+
+        qContainer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const rect = qContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            const newScale = Math.min(Q_MAX_SCALE, Math.max(Q_MIN_SCALE, qState.scale - Math.sign(e.deltaY) * 0.5));
+            const viewX = (mouseX - qState.pX) / qState.scale;
+            const viewY = (mouseY - qState.pY) / qState.scale;
+            qState.scale = newScale;
+            qState.pX = mouseX - viewX * qState.scale;
+            qState.pY = mouseY - viewY * qState.scale;
+            clampQualitativePan();
+            updateQualitativeSlider();
+        }, { passive: false });
+
+        qContainer.addEventListener('mousedown', (e) => {
+            qClickStartX = e.clientX;
+            qClickStartY = e.clientY;
+            if (qState.scale > 1.01) {
+                qDragging = true;
+                qLastTouchX = e.clientX;
+                qLastTouchY = e.clientY;
+                qContainer.classList.add('is-dragging');
+            } else {
+                setQualitativeSliderFromEvent(e);
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (qDragging) {
+                e.preventDefault();
+                qState.pX += e.clientX - qLastTouchX;
+                qState.pY += e.clientY - qLastTouchY;
+                qLastTouchX = e.clientX;
+                qLastTouchY = e.clientY;
+                clampQualitativePan();
+                updateQualitativeSlider();
+                return;
+            }
+
+            if (qState.scale <= 1.01 && qContainer.contains(e.target)) {
+                setQualitativeSliderFromEvent(e);
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (!qDragging) return;
+            qDragging = false;
+            qContainer.classList.remove('is-dragging');
+        });
+
+        qContainer.addEventListener('click', (e) => {
+            if (qTouchDevice) return;
+            if (Math.abs(e.clientX - qClickStartX) < 5 && Math.abs(e.clientY - qClickStartY) < 5) {
+                toggleQualitativePlay();
+            }
+        });
+
+        qContainer.addEventListener('touchstart', (e) => {
+            qTouchDevice = true;
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                qInitialPinchDistance = getQualitativeDistance(e.touches[0], e.touches[1]);
+                qInitialScale = qState.scale;
+                return;
+            }
+            if (e.touches.length !== 1) return;
+            const touch = e.touches[0];
+            const rect = qContainer.getBoundingClientRect();
+            const touchX = touch.clientX - rect.left;
+            qTouchStartTime = Date.now();
+            qTouchStartX = touch.clientX;
+            qTouchStartY = touch.clientY;
+            if (Math.abs(touchX - rect.width * qSliderPos) < 40) {
+                qSliderDragging = true;
+                setQualitativeSliderFromEvent(touch);
+            } else if (qState.scale > 1.01) {
+                qDragging = true;
+                qLastTouchX = touch.clientX;
+                qLastTouchY = touch.clientY;
+            }
+            qContainer.classList.add('is-dragging');
+            e.preventDefault();
+        }, { passive: false });
+
+        qContainer.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && qInitialPinchDistance) {
+                e.preventDefault();
+                const distance = getQualitativeDistance(e.touches[0], e.touches[1]);
+                const newScale = Math.min(Q_MAX_SCALE, Math.max(Q_MIN_SCALE, qInitialScale * distance / qInitialPinchDistance));
+                const rect = qContainer.getBoundingClientRect();
+                const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+                const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+                const viewX = (centerX - qState.pX) / qState.scale;
+                const viewY = (centerY - qState.pY) / qState.scale;
+                qState.scale = newScale;
+                qState.pX = centerX - viewX * qState.scale;
+                qState.pY = centerY - viewY * qState.scale;
+                clampQualitativePan();
+                updateQualitativeSlider();
+            } else if (e.touches.length === 1 && qSliderDragging) {
+                e.preventDefault();
+                setQualitativeSliderFromEvent(e.touches[0]);
+            } else if (e.touches.length === 1 && qDragging && qState.scale > 1.01) {
+                e.preventDefault();
+                qState.pX += e.touches[0].clientX - qLastTouchX;
+                qState.pY += e.touches[0].clientY - qLastTouchY;
+                qLastTouchX = e.touches[0].clientX;
+                qLastTouchY = e.touches[0].clientY;
+                clampQualitativePan();
+                updateQualitativeSlider();
+            }
+        }, { passive: false });
+
+        qContainer.addEventListener('touchend', (e) => {
+            if (e.touches.length) return;
+            qInitialPinchDistance = null;
+            qDragging = false;
+            qContainer.classList.remove('is-dragging');
+            const touch = e.changedTouches[0];
+            if (!qSliderDragging && Date.now() - qTouchStartTime < 300
+                && Math.abs(touch.clientX - qTouchStartX) < 10
+                && Math.abs(touch.clientY - qTouchStartY) < 10) {
+                toggleQualitativePlay();
+            }
+            qSliderDragging = false;
+        });
+
+        window.addEventListener('resize', () => {
+            clampQualitativePan();
+            updateQualitativeSlider();
+        });
+        setQualitativeVideo();
+        drawQualitativeLoop();
+    }
+
+    initQualitativeComparison();
+
+
+    const gsScenes = [
+        {
+            name: "3DGS 1",
+            thumbnail: "./static/images/thumbnails/3dgs01_realvdeblur.jpg",
+            input: "./static/videos/3dgs01_blur_input_realvdeblur_input.mp4",
+            methods: {
+                blur: "./static/videos/3dgs01_blur_realvdeblur.mp4",
+                bags: "./static/videos/3dgs01_bags_realvdeblur.mp4",
+                deblurringgs: "./static/videos/3dgs01_deblurringgs_realvdeblur.mp4"
+            }
+        },
+        {
+            name: "3DGS 2",
+            thumbnail: "./static/images/thumbnails/3dgs02_realvdeblur.jpg",
+            input: "./static/videos/3dgs02_blur_input_realvdeblur_input.mp4",
+            methods: {
+                blur: "./static/videos/3dgs02_blur_realvdeblur.mp4",
+                bags: "./static/videos/3dgs02_bags_realvdeblur.mp4",
+                deblurringgs: "./static/videos/3dgs02_deblurringgs_realvdeblur.mp4"
+            }
+        },
+        {
+            name: "3DGS 3",
+            thumbnail: "./static/images/thumbnails/3dgs03_realvdeblur.jpg",
+            input: "./static/videos/3dgs_defocus_mild_popcorn_blur_input_ours_input.mp4",
+            methods: {
+                blur: "./static/videos/3dgs_defocus_mild_popcorn_blur_ours.mp4",
+                bags: "./static/videos/3dgs_defocus_mild_popcorn_bags_ours.mp4",
+                deblurringgs: "./static/videos/3dgs_defocus_mild_popcorn_deblurringgs_ours.mp4"
+            }
+        },
+        {
+            name: "3DGS 4",
+            thumbnail: "./static/images/thumbnails/3dgs04_realvdeblur.jpg",
+            input: "./static/videos/3dgs_motion_strong_limon_blur_input_ours_input.mp4",
+            methods: {
+                blur: "./static/videos/3dgs_motion_strong_limon_blur_ours.mp4",
+                bags: "./static/videos/3dgs_motion_strong_limon_bags_ours.mp4",
+                deblurringgs: "./static/videos/3dgs_motion_strong_limon_deblurringgs_ours.mp4"
+            }
+        }
+    ];
+
+    const gsMethodLabels = {
+        blur: "3DGS",
+        bags: "BAGS",
+        deblurringgs: "Deblurring-3DGS"
+    };
+
+    function createGsComparisonViewer(options) {
+        const container = document.getElementById(options.containerId);
+        const video = document.getElementById(options.videoId);
+        const canvasLeft = document.getElementById(options.canvasLeftId);
+        const canvasRight = document.getElementById(options.canvasRightId);
+        const labelLeft = document.getElementById(options.labelLeftId);
+        const labelRight = document.getElementById(options.labelRightId);
+        const clipperLeft = document.getElementById(options.clipperLeftId);
+        const clipperRight = document.getElementById(options.clipperRightId);
+        const sliderBar = document.getElementById(options.sliderBarId);
+        if (!container || !video || !canvasLeft || !canvasRight) return null;
+
+        const contextLeft = canvasLeft.getContext('2d');
+        const contextRight = canvasRight.getContext('2d');
+        let sliderPos = 0.5;
+        let currentSource = '';
+        let dragging = false;
+        let clickStartX = 0;
+
+        function updateSlider() {
+            const clipX = container.offsetWidth * sliderPos;
+            canvasLeft.style.clipPath = 'polygon(0 0, ' + clipX + 'px 0, ' + clipX + 'px 100%, 0 100%)';
+            clipperLeft.style.width = (sliderPos * 100) + '%';
+            clipperRight.style.width = ((1 - sliderPos) * 100) + '%';
+            sliderBar.style.left = (sliderPos * 100) + '%';
+        }
+
+        function setCanvasSize(width, height) {
+            width = Math.max(1, Math.floor(width));
+            height = Math.max(1, Math.floor(height));
+            if (canvasLeft.width === width && canvasLeft.height === height) return;
+
+            canvasLeft.width = width;
+            canvasLeft.height = height;
+            canvasRight.width = width;
+            canvasRight.height = height;
+            container.style.aspectRatio = width + ' / ' + height;
+
+            const displayRatio = width / height;
+            container.classList.remove('vertical', 'horizontal');
+            if (displayRatio < 0.8) container.classList.add('vertical');
+            else container.classList.add('horizontal');
+            updateSlider();
+        }
+
+        function playVideo() {
+            const playPromise = video.play();
+            if (playPromise) {
+                playPromise
+                    .then(() => container.classList.remove('paused'))
+                    .catch(() => container.classList.add('paused'));
+            }
+        }
+
+        function setSource(source) {
+            if (currentSource !== source) {
+                currentSource = source;
+                video.src = source;
+            }
+            playVideo();
+        }
+
+        function setLabels(left, right) {
+            labelLeft.textContent = left;
+            labelRight.textContent = right;
+        }
+
+        function drawLoop() {
+            if (video.readyState >= 2 && video.videoWidth > 0) {
+                const isMerged = video.videoWidth / video.videoHeight > 2.2;
+                const sourceWidth = isMerged ? Math.floor(video.videoWidth / 2) : video.videoWidth;
+                const sourceHeight = video.videoHeight;
+                setCanvasSize(sourceWidth, sourceHeight);
+
+                if (isMerged) {
+                    contextLeft.drawImage(video, 0, 0, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
+                    contextRight.drawImage(video, sourceWidth, 0, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
+                } else {
+                    contextLeft.drawImage(video, 0, 0, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
+                    contextRight.drawImage(video, 0, 0, sourceWidth, sourceHeight, 0, 0, sourceWidth, sourceHeight);
+                }
+            }
+            requestAnimationFrame(drawLoop);
+        }
+
+        function setSliderFromPointer(e) {
+            const rect = container.getBoundingClientRect();
+            sliderPos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            updateSlider();
+        }
+
+        function togglePlay() {
+            if (video.paused) {
+                playVideo();
+            } else {
+                video.pause();
+                container.classList.add('paused');
+            }
+        }
+
+        container.addEventListener('pointerdown', (e) => {
+            dragging = true;
+            clickStartX = e.clientX;
+            container.setPointerCapture(e.pointerId);
+            container.classList.add('is-dragging');
+            setSliderFromPointer(e);
+        });
+
+        container.addEventListener('pointermove', (e) => {
+            if (dragging || e.pointerType === 'mouse') setSliderFromPointer(e);
+        });
+
+        container.addEventListener('pointerup', (e) => {
+            if (!dragging) return;
+            dragging = false;
+            if (container.hasPointerCapture(e.pointerId)) container.releasePointerCapture(e.pointerId);
+            container.classList.remove('is-dragging');
+            if (Math.abs(e.clientX - clickStartX) < 5) togglePlay();
+        });
+
+        container.addEventListener('pointercancel', () => {
+            dragging = false;
+            container.classList.remove('is-dragging');
+        });
+
+        window.addEventListener('resize', updateSlider);
+        updateSlider();
+        drawLoop();
+
+        return { setSource, setLabels };
+    }
+
+    function initGsComparison() {
+        const inputViewer = createGsComparisonViewer({
+            containerId: 'gs-input-comparison-viewer',
+            videoId: 'gs_input_video_source',
+            canvasLeftId: 'gs-input-canvas-left',
+            canvasRightId: 'gs-input-canvas-right',
+            labelLeftId: 'gs-input-label-left',
+            labelRightId: 'gs-input-label-right',
+            clipperLeftId: 'gs-input-label-clipper-left',
+            clipperRightId: 'gs-input-label-clipper-right',
+            sliderBarId: 'gs-input-slider-bar'
+        });
+        const nvsViewer = createGsComparisonViewer({
+            containerId: 'gs-comparison-viewer',
+            videoId: 'gs_video_source',
+            canvasLeftId: 'gs-canvas-left',
+            canvasRightId: 'gs-canvas-right',
+            labelLeftId: 'gs-label-left',
+            labelRightId: 'gs-label-right',
+            clipperLeftId: 'gs-label-clipper-left',
+            clipperRightId: 'gs-label-clipper-right',
+            sliderBarId: 'gs-slider-bar'
+        });
+        if (!inputViewer || !nvsViewer) return;
+
+        const methodTabs = document.querySelectorAll('#gs-method-tabs .method-tab');
+        const sceneThumbnails = document.getElementById('gs-scene-thumbnails');
+        const inputNote = document.getElementById('gs-input-note');
+        const nvsNote = document.getElementById('gs-nvs-note');
+        let sceneIndex = 0;
+        let method = 'blur';
+
+        function updateComparisons(updateInputSource) {
+            const scene = gsScenes[sceneIndex];
+            const methodLabel = gsMethodLabels[method];
+
+            if (updateInputSource) inputViewer.setSource(scene.input);
+            nvsViewer.setSource(scene.methods[method]);
+
+            inputViewer.setLabels(
+                'Blurred inputs',
+                'Restored inputs'
+            );
+            nvsViewer.setLabels(methodLabel, 'RealVDeblur + 3DGS');
+
+            inputNote.textContent = 'Left: blurred observations used by the selected baseline. Right: observations restored by RealVDeblur before standard 3DGS training.';
+            nvsNote.textContent = 'Left: novel views rendered by ' + methodLabel + ' from blurred observations. Right: novel views rendered by 3DGS from RealVDeblur-restored observations.';
+        }
+
+        const thumbnailButtons = gsScenes.map((scene, index) => {
+            const button = document.createElement('button');
+            button.className = 'qualitative-thumb' + (index === 0 ? ' is-active' : '');
+            button.type = 'button';
+            button.setAttribute('aria-label', 'Show ' + scene.name);
+            button.innerHTML = '<img src="' + scene.thumbnail + '" alt="" loading="lazy"><span>' + scene.name + '</span>';
+            button.addEventListener('click', () => {
+                sceneIndex = index;
+                thumbnailButtons.forEach((el, i) => el.classList.toggle('is-active', i === index));
+                updateComparisons(true);
+            });
+            sceneThumbnails.appendChild(button);
+            return button;
+        });
+
+        methodTabs.forEach((tab) => {
+            tab.addEventListener('click', () => {
+                method = tab.dataset.method;
+                methodTabs.forEach((el) => el.classList.toggle('is-active', el === tab));
+                updateComparisons(false);
+            });
+        });
+
+        updateComparisons(true);
+    }
+
+    initGsComparison();
+
+    function initDepthComparison(depthContainer) {
+        const depthVideo = depthContainer.querySelector('.depth-video-source');
+        const depthCanvasLeft = depthContainer.querySelector('.depth-canvas-left');
+        const depthCanvasRight = depthContainer.querySelector('.depth-canvas-right');
+        const depthCtxLeft = depthCanvasLeft.getContext('2d');
+        const depthCtxRight = depthCanvasRight.getContext('2d');
+        const depthClipperLeft = depthContainer.querySelector('.depth-label-clipper-left');
+        const depthClipperRight = depthContainer.querySelector('.depth-label-clipper-right');
+        const depthSliderBar = depthContainer.querySelector('.depth-slider-bar');
+        let depthSliderPos = 0.5;
+        let depthDragging = false;
+        let depthClickStartX = 0;
+
+        function updateDepthSlider() {
+            const clipX = depthContainer.offsetWidth * depthSliderPos;
+            depthCanvasLeft.style.clipPath = `polygon(0 0, ${clipX}px 0, ${clipX}px 100%, 0 100%)`;
+            depthClipperLeft.style.width = (depthSliderPos * 100) + '%';
+            depthClipperRight.style.width = ((1 - depthSliderPos) * 100) + '%';
+            depthSliderBar.style.left = (depthSliderPos * 100) + '%';
+        }
+
+        function drawDepthLoop() {
+            if (depthVideo.readyState >= 2) {
+                const srcWidth = depthVideo.videoWidth / 2;
+                const srcHeight = depthVideo.videoHeight;
+
+                if (depthCanvasLeft.width !== srcWidth || depthCanvasLeft.height !== srcHeight) {
+                    depthCanvasLeft.width = srcWidth;
+                    depthCanvasLeft.height = srcHeight;
+                    depthCanvasRight.width = srcWidth;
+                    depthCanvasRight.height = srcHeight;
+                    depthContainer.style.aspectRatio = `${srcWidth} / ${srcHeight}`;
+                    updateDepthSlider();
+                }
+
+                depthCtxLeft.drawImage(depthVideo, 0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+                depthCtxRight.drawImage(depthVideo, srcWidth, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+            }
+            requestAnimationFrame(drawDepthLoop);
+        }
+
+        function setDepthSliderFromEvent(e) {
+            const rect = depthContainer.getBoundingClientRect();
+            depthSliderPos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            updateDepthSlider();
+        }
+
+        function toggleDepthPlay() {
+            if (depthVideo.paused) {
+                depthVideo.play()
+                    .then(() => depthContainer.classList.remove('paused'))
+                    .catch(() => depthContainer.classList.add('paused'));
+            } else {
+                depthVideo.pause();
+                depthContainer.classList.add('paused');
+            }
+        }
+
+        depthContainer.addEventListener('pointerdown', (e) => {
+            depthDragging = true;
+            depthClickStartX = e.clientX;
+            depthContainer.setPointerCapture(e.pointerId);
+            depthContainer.classList.add('is-dragging');
+            setDepthSliderFromEvent(e);
+        });
+
+        depthContainer.addEventListener('pointermove', (e) => {
+            if (depthDragging || e.pointerType === 'mouse') setDepthSliderFromEvent(e);
+        });
+
+        depthContainer.addEventListener('pointerup', (e) => {
+            if (!depthDragging) return;
+            depthDragging = false;
+            depthContainer.releasePointerCapture(e.pointerId);
+            depthContainer.classList.remove('is-dragging');
+            if (Math.abs(e.clientX - depthClickStartX) < 5) toggleDepthPlay();
+        });
+
+        depthContainer.addEventListener('pointercancel', () => {
+            depthDragging = false;
+            depthContainer.classList.remove('is-dragging');
+        });
+
+        window.addEventListener('resize', updateDepthSlider);
+        depthVideo.play().catch(() => depthContainer.classList.add('paused'));
+        updateDepthSlider();
+        drawDepthLoop();
+    }
+
+    document.querySelectorAll('[data-depth-comparison]').forEach(initDepthComparison);
+
+    const scenes = [
+        // "./static/videos/real_world1.mp4",
+        // "./static/videos/real_world2.mp4",
+        // "./static/videos/real_world3.mp4",
+        //"./static/videos/real_world4.mp4",
+        // "./static/videos/real_world5.mp4",
+        //"./static/videos/real_world6.mp4",
+        // "./static/videos/real_world7.mp4",
+        // "./static/videos/real_world8.mp4",
+        "./static/videos/2023_07_10_02_48_26_blur_ours.mp4",
+        "./static/videos/defocus_mild_Ujikintoki_blur_realvdeblur.mp4",
+        "./static/videos/davis_dog_blur_ours.mp4",
+        "./static/videos/000_0001_blur_ours.mp4",
+        "./static/videos/009_0001_blur_ours.mp4",
+        "./static/videos/023_0002_blur_ours.mp4",
+        "./static/videos/031_0003_blur_ours.mp4",
+        "./static/videos/032_0003_blur_ours.mp4",
+        
+
+    ];
+
+    const container = document.getElementById('comparison-viewer');
+    const video = document.getElementById('main_video_source');
+    const previousSceneButton = document.getElementById('hero-previous-scene');
+    const nextSceneButton = document.getElementById('hero-next-scene');
+    const sceneDotsContainer = document.getElementById('hero-scene-dots');
+    
+    // 레이어 참조
+    const videoLayerGroup = document.getElementById('video-layer-group');
+    const canvasLeft = document.getElementById('canvas-left');
+    const canvasRight = document.getElementById('canvas-right');
+    const ctxLeft = canvasLeft.getContext('2d');
+    const ctxRight = canvasRight.getContext('2d');
+    
+    // UI 참조
+    const clipperLabelLeft = document.getElementById('label-clipper-left');
+    const clipperLabelRight = document.getElementById('label-clipper-right');
+    const sliderBar = document.getElementById('slider-bar');
+    const scaleIndicator = document.getElementById('scale-indicator');
+    
+    // --- State Variables ---
+    let sliderPos = 0.5; 
+    let state = { scale: 1, pX: 0, pY: 0 };
+    const MIN_SCALE = 1;
+    const MAX_SCALE = 8;
+
+    // --- Mobile Touch Vars ---
+    let initialPinchDistance = null;
+    let initialScale = 1;
+    let lastTouchX = 0;
+    let lastTouchY = 0;
+    
+    // [Tap vs Drag 감지용 변수]
+    let touchStartTime = 0;
+    let touchStartXForTap = 0;
+    let touchStartYForTap = 0;
+    let isTouchDevice = false; // 터치 디바이스 여부 감지
+    
+    // 슬라이더 드래그 중인지 여부
+    let isSliderDragging = false;
+    
+    let currentSceneIndex = 0;
+
+    const sceneDotButtons = scenes.map((scene, index) => {
+        const dot = document.createElement('button');
+        dot.className = 'hero-carousel-dot';
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Show video ${index + 1} of ${scenes.length}`);
+        dot.addEventListener('click', () => changeScene(index));
+        sceneDotsContainer.appendChild(dot);
+        return dot;
+    });
+
+    function updateCarouselControls() {
+        const previousIndex = (currentSceneIndex - 1 + scenes.length) % scenes.length;
+        const nextIndex = (currentSceneIndex + 1) % scenes.length;
+        previousSceneButton.setAttribute('aria-label', 'Previous video (' + (previousIndex + 1) + ' of ' + scenes.length + ')');
+        nextSceneButton.setAttribute('aria-label', 'Next video (' + (nextIndex + 1) + ' of ' + scenes.length + ')');
+    }
+
+    function updateSceneDots() {
+        sceneDotButtons.forEach((dot, index) => {
+            const isActive = index === currentSceneIndex;
+            dot.classList.toggle('is-active', isActive);
+            if (isActive) dot.setAttribute('aria-current', 'true');
+            else dot.removeAttribute('aria-current');
+        });
+    }
+
+    updateSceneDots();
+    updateCarouselControls();
+
+    // --- 드로잉 루프 ---
+    function drawLoop() {
+        if (video.readyState >= 2) { 
+            const isMerged = video.videoWidth > video.videoHeight; 
+            let srcWidth, srcHeight;
+            
+            if (isMerged) {
+                srcWidth = video.videoWidth / 2;
+                srcHeight = video.videoHeight;
+            } else {
+                srcWidth = video.videoWidth;
+                srcHeight = video.videoHeight;
+            }
+            
+            if (canvasLeft.width !== srcWidth || canvasLeft.height !== srcHeight) {
+                canvasLeft.width = srcWidth;
+                canvasLeft.height = srcHeight;
+                canvasRight.width = srcWidth;
+                canvasRight.height = srcHeight;
+                
+                const displayRatio = srcWidth / srcHeight;
+                container.style.aspectRatio = `${srcWidth} / ${srcHeight}`;
+                container.classList.remove('vertical', 'horizontal');
+                if (displayRatio < 0.8) container.classList.add('vertical');
+                else container.classList.add('horizontal');
+            }
+
+            if (isMerged) {
+                ctxLeft.drawImage(video, 0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+                ctxRight.drawImage(video, srcWidth, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+            } else {
+                ctxLeft.drawImage(video, 0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+                ctxRight.drawImage(video, 0, 0, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight);
+            }
+        }
+        requestAnimationFrame(drawLoop);
+    }
+    
+    // --- Transform 업데이트 ---
+    function updateTransform() {
+        videoLayerGroup.style.transform = `translate(${state.pX}px, ${state.pY}px) scale(${state.scale})`;
+        
+        const containerWidth = container.offsetWidth; 
+        const sliderScreenX = containerWidth * sliderPos;
+        const clipX = (sliderScreenX - state.pX) / state.scale;
+        
+        canvasLeft.style.clipPath = `polygon(0 0, ${clipX}px 0, ${clipX}px 100%, 0 100%)`;
+        
+        clipperLabelLeft.style.width = (sliderPos * 100) + '%';
+        clipperLabelRight.style.width = ((1 - sliderPos) * 100) + '%';
+        sliderBar.style.left = (sliderPos * 100) + '%';
+        
+        scaleIndicator.textContent = state.scale.toFixed(1) + 'x';
+        scaleIndicator.style.opacity = state.scale > 1.01 ? 1 : 0;
+    }
+
+    // --- [개선된] 모바일 터치 이벤트 핸들러 (Tap vs Drag 분리) ---
+    container.addEventListener('touchstart', (e) => {
+        isTouchDevice = true; // 터치 기기임을 명시
+
+        if (e.touches.length === 2) {
+            // Pinch Start
+            e.preventDefault();
+            initialPinchDistance = getDistance(e.touches[0], e.touches[1]);
+            initialScale = state.scale;
+        } else if (e.touches.length === 1) {
+            const touch = e.touches[0];
+            const rect = container.getBoundingClientRect();
+            
+            // 탭 감지용 데이터 저장
+            touchStartTime = new Date().getTime();
+            touchStartXForTap = touch.clientX;
+            touchStartYForTap = touch.clientY;
+            
+            // 현재 터치 X 위치 (컨테이너 내부 좌표)
+            const touchX = touch.clientX - rect.left;
+            
+            // 현재 슬라이더의 스크린상 X 위치
+            const sliderScreenX = rect.width * sliderPos;
+            
+            // 슬라이더 핸들 근처인지 확인 (좌우 40px 여유)
+            const isNearSlider = Math.abs(touchX - sliderScreenX) < 40;
+            
+            if (isNearSlider) {
+                // [Case 1] 슬라이더 드래그 모드 진입
+                isSliderDragging = true;
+                e.preventDefault(); // 스크롤 등 브라우저 기본 동작 차단
+                container.classList.add('is-dragging'); 
+            } else {
+                // [Case 2] 일반 화면 터치 (Pan 혹은 Tap 대기)
+                // 줌 상태일 때는 Pan 준비
+                if (state.scale > 1.01) {
+                     lastTouchX = touch.clientX;
+                     lastTouchY = touch.clientY;
+                     container.classList.add('is-dragging');
+                }
+                // 1.0 배율일 때는 아무것도 하지 않고 touchend를 기다림 (Tap 판별)
+            }
+        }
+    }, { passive: false });
+
+    container.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && initialPinchDistance) {
+            // Pinch Zooming logic
+            e.preventDefault();
+            const currentDistance = getDistance(e.touches[0], e.touches[1]);
+            const scaleChange = currentDistance / initialPinchDistance;
+            const newScale = Math.min(Math.max(MIN_SCALE, initialScale * scaleChange), MAX_SCALE);
+            
+            const rect = container.getBoundingClientRect();
+            const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+            const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+            
+            const vx = (centerX - state.pX) / state.scale;
+            const vy = (centerY - state.pY) / state.scale;
+            
+            state.scale = newScale;
+            state.pX = centerX - vx * state.scale;
+            state.pY = centerY - vy * state.scale;
+            
+            clampPan();
+            updateTransform();
+        } else if (e.touches.length === 1) {
+            if (isSliderDragging) {
+                // 슬라이더 이동
+                e.preventDefault();
+                updateSliderFromEvent(e.touches[0]);
+            } else if (state.scale > 1.01) {
+                // Pan 이동
+                e.preventDefault();
+                const dx = e.touches[0].clientX - lastTouchX;
+                const dy = e.touches[0].clientY - lastTouchY;
+                
+                state.pX += dx;
+                state.pY += dy;
+                
+                lastTouchX = e.touches[0].clientX;
+                lastTouchY = e.touches[0].clientY;
+                
+                clampPan();
+                updateTransform();
+            }
+        }
+    }, { passive: false });
+    
+    container.addEventListener('touchend', (e) => {
+        // 핀치나 드래그 종료 정리
+        initialPinchDistance = null;
+        container.classList.remove('is-dragging');
+        
+        // [중요] Tap(탭) 감지 로직
+        // 슬라이더 드래그 중이 아니었고, 손가락을 뗐을 때 실행
+        if (!isSliderDragging && e.changedTouches.length > 0) {
+            const touch = e.changedTouches[0];
+            const diffTime = new Date().getTime() - touchStartTime;
+            const diffX = Math.abs(touch.clientX - touchStartXForTap);
+            const diffY = Math.abs(touch.clientY - touchStartYForTap);
+
+            // 조건: 300ms 이내에 떼고, 움직임이 10px 미만이어야 "Tap"으로 인정
+            if (diffTime < 300 && diffX < 10 && diffY < 10) {
+                e.preventDefault(); // Click 이벤트 중복 발생 방지
+                togglePlayPause();
+            }
+        }
+
+        isSliderDragging = false; // 드래그 상태 해제
+    });
+
+    function getDistance(touch1, touch2) {
+        const dx = touch1.clientX - touch2.clientX;
+        const dy = touch1.clientY - touch2.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+
+    // --- PC 마우스 이벤트 ---
+    container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const rect = container.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        const delta = -Math.sign(e.deltaY) * 0.5;
+        const newScale = Math.min(Math.max(MIN_SCALE, state.scale + delta), MAX_SCALE);
+        const vx = (mx - state.pX) / state.scale;
+        const vy = (my - state.pY) / state.scale;
+        state.scale = newScale;
+        state.pX = mx - vx * state.scale;
+        state.pY = my - vy * state.scale;
+        clampPan();
+        updateTransform();
+    }, { passive: false });
+
+    let isDragging = false;
+    let lastX = 0, lastY = 0;
+    
+    container.addEventListener('mousedown', (e) => {
+        // PC 마우스 동작:
+        // 1. 줌 상태면 Pan 시작
+        // 2. 아니면 슬라이더 이동 (즉시 점프 허용)
+        if (state.scale > 1) {
+            isDragging = true;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            container.classList.add('is-dragging');
+        } else {
+            updateSliderFromEvent(e);
+        }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (isDragging && state.scale > 1) {
+            e.preventDefault();
+            const dx = e.clientX - lastX;
+            const dy = e.clientY - lastY;
+            state.pX += dx;
+            state.pY += dy;
+            lastX = e.clientX;
+            lastY = e.clientY;
+            clampPan();
+            updateTransform();
+        } else {
+            if (container.contains(e.target)) {
+                 updateSliderFromEvent(e);
+            }
+        }
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        container.classList.remove('is-dragging');
+    });
+    
+    function clampPan() {
+        const w = container.offsetWidth;
+        const h = container.offsetHeight;
+        const currW = w * state.scale;
+        const currH = h * state.scale;
+        if (currW > w) state.pX = Math.min(0, Math.max(w - currW, state.pX));
+        else state.pX = 0;
+        if (currH > h) state.pY = Math.min(0, Math.max(h - currH, state.pY));
+        else state.pY = 0;
+    }
+    
+    function updateSliderFromEvent(e) {
+        // 모바일 드래그 중이 아니거나 (PC), 모바일에서 드래그 플래그가 켜진 경우에만 실행
+        // PC Pan 중에는 실행 안됨
+        if (!isSliderDragging && isTouchDevice && e.type.startsWith('touch')) return;
+        
+        // [수정] 데스크탑 모드에서 줌 상태일 때 마우스 이동으로 슬라이더가 안 움직이는 문제 수정
+        // 이전 코드: if (!isSliderDragging && state.scale > 1 && (e.type === 'mousemove')) return; 
+        // -> 이 라인을 삭제하여 데스크탑 마우스 Hover 시 슬라이더 이동 허용
+
+        const rect = container.getBoundingClientRect();
+        if (e.clientX < rect.left || e.clientX > rect.right) return;
+        
+        let x = e.clientX - rect.left;
+        sliderPos = x / rect.width;
+        sliderPos = Math.max(0, Math.min(1, sliderPos));
+        updateTransform();
+    }
+
+    let clickStartX = 0;
+    container.addEventListener('mousedown', (e) => clickStartX = e.clientX);
+    
+    // [중요] PC 전용 Click 이벤트 처리
+    container.addEventListener('click', (e) => {
+        // 터치 디바이스에서는 touchend에서 Tap을 처리하므로, 여기서는 무시
+        if (isTouchDevice) return;
+
+        // 마우스 클릭 시 흔들림(드래그)이 적었을 때만 Play/Pause
+        if (Math.abs(e.clientX - clickStartX) < 5) {
+            togglePlayPause();
+        }
+    });
+
+    // Play/Pause 토글 공통 함수
+    function togglePlayPause() {
+        if (video.paused) {
+            video.play();
+            container.classList.remove('paused');
+        } else {
+            video.pause();
+            container.classList.add('paused');
+        }
+    }
+
+    function changeScene(index) {
+        const nextIndex = (index + scenes.length) % scenes.length;
+        if (nextIndex === currentSceneIndex) return;
+
+        currentSceneIndex = nextIndex;
+        container.classList.add('is-loading');
+        updateSceneDots();
+        updateCarouselControls();
+
+        video.src = scenes[currentSceneIndex];
+        video.load();
+        video.play().catch(()=>container.classList.add('paused'));
+        container.classList.remove('paused');
+        state = { scale: 1, pX: 0, pY: 0 };
+        updateTransform();
+    }
+
+    previousSceneButton.addEventListener('click', () => {
+        changeScene(currentSceneIndex - 1);
+    });
+
+    nextSceneButton.addEventListener('click', () => {
+        changeScene(currentSceneIndex + 1);
+    });
+
+    video.addEventListener('loadeddata', () => {
+        container.classList.remove('is-loading');
+    });
+
+    video.addEventListener('playing', () => {
+        container.classList.remove('paused');
+    });
+
+    video.addEventListener('error', () => {
+        container.classList.remove('is-loading');
+        container.classList.add('paused');
+    });
+
+    window.addEventListener('resize', () => {
+        canvasLeft.width = 0; 
+        updateTransform();
+    });
+
+    video.play().catch(() => container.classList.add('paused'));
+    drawLoop(); 
+
+    // Autoplay canvas source videos when their comparison viewer is visible.
+    // This also retries playback when Safari pauses an off-screen video.
+    const comparisonVideos = document.querySelectorAll(
+        '#main_video_source, #qualitative_video_source, #gs_video_source, #gs_input_video_source, .depth-video-source'
+    );
+
+    comparisonVideos.forEach((sourceVideo) => {
+        sourceVideo.muted = true;
+        sourceVideo.defaultMuted = true;
+        sourceVideo.autoplay = true;
+        sourceVideo.loop = true;
+        sourceVideo.playsInline = true;
+        sourceVideo.setAttribute('muted', '');
+        sourceVideo.setAttribute('autoplay', '');
+        sourceVideo.setAttribute('playsinline', '');
+        sourceVideo.setAttribute('webkit-playsinline', '');
+    });
+
+    function requestComparisonAutoplay(sourceVideo) {
+        const viewer = sourceVideo.closest('.video-compare-container');
+        if (!viewer || viewer.getBoundingClientRect().bottom < 0
+            || viewer.getBoundingClientRect().top > window.innerHeight) return;
+        sourceVideo.play()
+            .then(() => viewer.classList.remove('paused'))
+            .catch((error) => {
+                viewer.classList.add('paused');
+                console.debug('Muted autoplay was blocked:', error.name, error.message);
+            });
+    }
+
+    comparisonVideos.forEach((sourceVideo) => {
+        sourceVideo.addEventListener('loadedmetadata', () => requestComparisonAutoplay(sourceVideo));
+        sourceVideo.addEventListener('canplay', () => requestComparisonAutoplay(sourceVideo));
+    });
+
+    if ('IntersectionObserver' in window) {
+        const autoplayObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                const sourceVideo = entry.target;
+                const viewer = sourceVideo.closest('.video-compare-container');
+                if (entry.isIntersecting) {
+                    requestComparisonAutoplay(sourceVideo);
+                } else {
+                    sourceVideo.pause();
+                }
+            });
+        }, { threshold: 0.1 });
+
+        comparisonVideos.forEach((sourceVideo) => autoplayObserver.observe(sourceVideo));
+    } else {
+        comparisonVideos.forEach((sourceVideo) => {
+            requestComparisonAutoplay(sourceVideo);
+        });
+    }
+
+    window.addEventListener('pageshow', () => {
+        comparisonVideos.forEach(requestComparisonAutoplay);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) comparisonVideos.forEach(requestComparisonAutoplay);
+    });
+
+  </script>
+</body>
+</html>
